@@ -6,11 +6,7 @@ directories:
 
 files:
   - out/**
-  # 平台包只保留目标平台（afterPack 进一步按架构裁剪 darwin 交叉部分）
-  - "!node_modules/@img/*-win32-*/**"
-  - "!node_modules/@img/*-linux*/**"
-  - "!node_modules/@resvg/*-win32-*/**"
-  - "!node_modules/@resvg/*-linux*/**"
+  # 平台/架构裁剪统一由 afterPack 处理（files 里的排除是全局的，会误伤 Windows 构建）
 
 asar: true
 # 原生二进制必须解包（sharp / resvg-js 及其平台包）
