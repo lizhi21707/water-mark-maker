@@ -17,7 +17,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
     "test": "node --test tests/*.test.ts",
     "dist:mac": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-vite build && electron-builder --mac dmg --x64 --arm64",
-    "dist:win": "CSC_IDENTITY_AUTO_DISCOVERY=false ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/ electron-vite build && electron-builder --win nsis"
+    "dist:win": "node scripts/dist-win.js"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",

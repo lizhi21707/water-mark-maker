@@ -9,6 +9,9 @@ on:
 jobs:
   mac:
     runs-on: macos-latest
+    env:
+      # CI 走 GitHub 官方源，覆盖 electron-builder.yml 里的 npmmirror（本地中国网络专用）
+      ELECTRON_MIRROR: https://github.com/electron/electron/releases/download/
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,6 +38,8 @@ jobs:
 
   win:
     runs-on: windows-latest
+    env:
+      ELECTRON_MIRROR: https://github.com/electron/electron/releases/download/
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
