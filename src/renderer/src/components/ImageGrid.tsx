@@ -5,8 +5,8 @@ import { ImageCard } from './ImageCard'
 
 const GAP = 12
 const MIN_CARD_W = 168
-/** 卡片信息区高度（文件名 + 尺寸两行） */
-const CARD_INFO_H = 48
+/** 卡片信息区估算高度（仅用于初始 estimateSize，实际行高由 measureElement 动态测量） */
+const CARD_INFO_H = 52
 
 /**
  * 虚拟化图片网格：行虚拟化 + 动态列数。
@@ -40,7 +40,9 @@ export function ImageGrid(): React.JSX.Element {
     count: rowCount,
     getScrollElement: () => containerRef.current,
     estimateSize: () => cardH + GAP,
-    overscan: 3
+    overscan: 3,
+    // 动态测量真实行高：字体行高/边框等导致实际高度与估算不符时，卡片底部会被裁切
+    measureElement: (el) => el.getBoundingClientRect().height
   })
 
   return (
@@ -49,13 +51,14 @@ export function ImageGrid(): React.JSX.Element {
         {virtualizer.getVirtualItems().map((row) => (
           <div
             key={row.key}
+            ref={virtualizer.measureElement}
+            data-index={row.index}
             className="grid"
             style={{
               position: 'absolute',
               top: 0,
               left: 0,
               width: '100%',
-              height: row.size - GAP,
               transform: `translateY(${row.start}px)`,
               gridTemplateColumns: `repeat(${cols}, 1fr)`,
               gap: GAP

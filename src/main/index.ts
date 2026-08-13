@@ -37,6 +37,8 @@ function createWindow(): void {
     minHeight: 640,
     show: false,
     backgroundColor: '#f8fafc',
+    // Windows dev 模式窗口/任务栏图标（打包版用 exe 内嵌图标）
+    icon: process.platform === 'win32' && !app.isPackaged ? join(app.getAppPath(), 'build', 'icon.png') : undefined,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
@@ -151,6 +153,11 @@ if (!gotLock) {
 
   app.whenReady().then(() => {
     Menu.setApplicationMenu(null)
+
+    // dev 模式用项目图标作启动图标（打包版由 electron-builder 生成 icns/exe 图标）
+    if (!app.isPackaged && process.platform === 'darwin') {
+      app.dock?.setIcon(join(app.getAppPath(), 'build', 'icon.png'))
+    }
 
     // wm-img://img/{id} —— 白名单校验后由 Chromium 解码，JS 零拷贝
     protocol.handle(IMG_SCHEME, (req) => {
