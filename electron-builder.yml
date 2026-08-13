@@ -1,0 +1,44 @@
+appId: com.watermark.maker
+productName: 水印工具
+directories:
+  buildResources: build
+  output: dist
+
+files:
+  - out/**
+
+asar: true
+# 原生二进制必须解包（sharp / resvg-js 及其平台包）
+asarUnpack:
+  - node_modules/@img/**
+  - node_modules/sharp/**
+  - node_modules/@resvg/**
+npmRebuild: false
+
+extraResources:
+  - from: resources/fonts
+    to: fonts
+
+mac:
+  identity: null # 无签名构建（首次打开需右键→打开）
+  category: public.app-category.graphics-design
+  target:
+    - dmg
+  icon: build/icon.png
+
+dmg:
+  title: 水印工具
+
+win:
+  target:
+    - nsis
+  icon: build/icon.png
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  shortcutName: 水印工具
+  createDesktopShortcut: true
+
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/
