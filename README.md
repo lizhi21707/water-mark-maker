@@ -16,11 +16,11 @@
 
 导入图片后的主界面（实时水印预览）：
 
-![主界面](docs/screenshots/grid.png)
+![主界面](docs/screenshots/grid.png?v=2)
 
 大图预览（左右按钮 / 键盘 ←→ 切换，Esc 关闭）：
 
-![大图预览](docs/screenshots/preview.png)
+![大图预览](docs/screenshots/preview.png?v=2)
 
 ## 使用
 
