@@ -10,7 +10,7 @@
 - 批量实时预览：网格卡片 + 大图预览即时渲染，调整参数零延迟（不经过 IPC）
 - 导出到指定目录，自动重命名：模板 `{name}`、`{ext}`、`{n}`、`{n:3}`、`{count}`、`{date}`、`{time}`；同名冲突自动避让（`_1`、`_2`…）或跳过 / 覆盖
 - 异步批量导出（并发 1–4 可调），实时进度、可取消，不阻塞界面
-- 内置 Noto Sans CJK SC 字体，双平台渲染一致；配置自动记忆
+- 内置 Noto Sans CJK SC 字体（GB2312 子集，生僻字回退系统字体），双平台渲染一致；配置自动记忆
 
 ## 使用
 
@@ -42,6 +42,8 @@ npm i --no-save --force \
   @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 @resvg/resvg-js-darwin-arm64 \
   @img/sharp-win32-x64 @img/sharp-libvips-win32-x64 @resvg/resvg-js-win32-x64-msvc
 ```
+
+`resources/fonts` 为 GB2312 子集字体（`scripts/subsetFonts.py` 生成，需 `pip3 install --user fonttools`）；如需恢复完整字形或调整字符范围，修改脚本后重新运行并打包。`scripts/afterPack.js` 在打包后删除错架构的原生二进制，减小安装包体积。
 
 ## 技术栈
 

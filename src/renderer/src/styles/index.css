@@ -20,18 +20,19 @@
     'Noto Sans CJK SC', -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
 }
 
-/* 水印合成字体（与 main 进程 resvg 使用同一字体文件，保证预览/导出一致） */
+/* 水印合成字体：wmm-fonts:// 由 main 从 resources/fonts 服务，与 resvg 共用一份文件（不打包进 renderer）
+   生僻字超出子集范围时回退系统字体 */
 @font-face {
   font-family: 'Noto Sans CJK SC';
   font-weight: 400;
   font-display: swap;
-  src: url('../fonts/NotoSansCJKsc-Regular.otf') format('opentype');
+  src: url('wmm-fonts://fonts/NotoSansCJKsc-Regular.otf') format('opentype');
 }
 @font-face {
   font-family: 'Noto Sans CJK SC';
   font-weight: 700;
   font-display: swap;
-  src: url('../fonts/NotoSansCJKsc-Bold.otf') format('opentype');
+  src: url('wmm-fonts://fonts/NotoSansCJKsc-Bold.otf') format('opentype');
 }
 
 html,

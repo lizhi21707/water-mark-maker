@@ -17,7 +17,8 @@ function renderWatermarkPng(config: WatermarkConfig, imgW: number, imgH: number)
   const resvg = new Resvg(svg, {
     font: {
       fontFiles: [fontFile(400), fontFile(700)],
-      loadSystemFonts: false,
+      // 子集字体外的生僻字回退系统字体，避免 tofu
+      loadSystemFonts: true,
       defaultFontFamily: WATERMARK_FONT_FAMILY
     }
   })

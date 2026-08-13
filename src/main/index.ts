@@ -2,14 +2,16 @@ import { app, BrowserWindow, Menu, net, protocol, session } from 'electron'
 import { readdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { pathToFileURL } from 'url'
-import { IMG_SCHEME } from '../shared/ipc'
+import { FONT_SCHEME, IMG_SCHEME } from '../shared/ipc'
 import { registerIpc, setRendererSender } from './ipc'
 import { addImages, getImagePath, isSupportedImage } from './services/imageService'
+import { fontsDir } from './paths'
 import { settingsStore } from './store/settingsStore'
 
-// 自定义协议必须在使用前注册特权（仅能读取会话内已添加的图片）
+// 自定义协议必须在使用前注册特权（仅能读取会话内已添加的图片 / 白名单字体）
 protocol.registerSchemesAsPrivileged([
-  { scheme: IMG_SCHEME, privileges: { standard: true, secure: true, supportFetchAPI: true } }
+  { scheme: IMG_SCHEME, privileges: { standard: true, secure: true, supportFetchAPI: true } },
+  { scheme: FONT_SCHEME, privileges: { standard: true, secure: true, supportFetchAPI: true } }
 ])
 
 const PROD_CSP = [
@@ -17,7 +19,7 @@ const PROD_CSP = [
   "script-src 'self'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' wm-img: data: blob:",
-  "font-src 'self' data:",
+  "font-src 'self' wmm-fonts: data:",
   "connect-src 'self'"
 ].join('; ')
 
@@ -156,6 +158,14 @@ if (!gotLock) {
       const p = id ? getImagePath(id) : undefined
       if (!p) return new Response('Not Found', { status: 404 })
       return net.fetch(pathToFileURL(p).toString())
+    })
+
+    // wmm-fonts://{fileName} —— 仅放行 resources/fonts 下白名单字体（renderer 与 main 共用一份）
+    const FONT_FILES = new Set(['NotoSansCJKsc-Regular.otf', 'NotoSansCJKsc-Bold.otf'])
+    protocol.handle(FONT_SCHEME, (req) => {
+      const name = decodeURIComponent(new URL(req.url).pathname.replace(/^\//, ''))
+      if (!FONT_FILES.has(name)) return new Response('Not Found', { status: 404 })
+      return net.fetch(pathToFileURL(fontsDir() + '/' + name).toString())
     })
 
     // 生产环境注入严格 CSP（dev 由 vite 服务，无需注入）

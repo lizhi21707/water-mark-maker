@@ -6,6 +6,11 @@ directories:
 
 files:
   - out/**
+  # 平台包只保留目标平台（afterPack 进一步按架构裁剪 darwin 交叉部分）
+  - "!node_modules/@img/*-win32-*/**"
+  - "!node_modules/@img/*-linux*/**"
+  - "!node_modules/@resvg/*-win32-*/**"
+  - "!node_modules/@resvg/*-linux*/**"
 
 asar: true
 # 原生二进制必须解包（sharp / resvg-js 及其平台包）
@@ -14,6 +19,12 @@ asarUnpack:
   - node_modules/sharp/**
   - node_modules/@resvg/**
 npmRebuild: false
+# 打包后删除错架构平台包（见 scripts/afterPack.js）
+afterPack: scripts/afterPack.js
+# 仅保留中英文 locale，减小体积
+electronLanguages:
+  - zh_CN
+  - en
 
 extraResources:
   - from: resources/fonts
