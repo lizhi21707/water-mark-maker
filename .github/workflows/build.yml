@@ -19,6 +19,9 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run dist:mac
+        env:
+          # electron-builder 收尾会调 GitHub API 拿仓库信息（更新元数据），CI 上必须有令牌
+          GH_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@v4
         with:
           name: mac-dmg
@@ -42,6 +45,8 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run dist:win
+        env:
+          GH_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@v4
         with:
           name: win-nsis

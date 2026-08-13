@@ -6,6 +6,10 @@
   "author": "tank",
   "license": "MIT",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lizhi21707/water-mark-maker.git"
+  },
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
