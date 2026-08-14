@@ -13,4 +13,6 @@ function run(cmd, args) {
 }
 
 run('npx', ['electron-vite', 'build'])
-run('npx', ['electron-builder', '--win', 'nsis'])
+// --publish never：发布统一走 CI 的 release job（softprops），
+// 否则 tag 构建会触发 electron-builder 隐式发布（GITHUB_TOKEN 只读 → 403）
+run('npx', ['electron-builder', '--win', 'nsis', '--publish', 'never'])

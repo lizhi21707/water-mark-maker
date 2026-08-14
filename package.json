@@ -16,7 +16,7 @@
     "preview": "electron-vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
     "test": "node --test tests/*.test.ts",
-    "dist:mac": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-vite build && electron-builder --mac dmg --x64 --arm64",
+    "dist:mac": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-vite build && electron-builder --mac dmg --x64 --arm64 --publish never",
     "dist:win": "node scripts/dist-win.js"
   },
   "dependencies": {
