@@ -35,6 +35,8 @@ mac:
 
 dmg:
   title: 水印工具
+  # 文件名用 ASCII：artifact 传输链（upload/download-artifact）会剥掉非 ASCII 字符
+  artifactName: water-mark-maker-${version}-${arch}.${ext}
 
 win:
   target:
@@ -46,6 +48,7 @@ nsis:
   allowToChangeInstallationDirectory: true
   shortcutName: 水印工具
   createDesktopShortcut: true
+  artifactName: water-mark-maker-${version}-setup.${ext}
 
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/

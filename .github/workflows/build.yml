@@ -67,6 +67,10 @@ jobs:
         with:
           path: dist
           pattern: '{mac-dmg,win-nsis}'
+      - name: 删除同名旧 Release（重打 tag 时清理旧资产，幂等）
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release delete "${{ github.ref_name }}" --yes --repo "${{ github.repository }}" || true
       - name: 发布 Release 并上传安装包
         uses: softprops/action-gh-release@v2
         with:
