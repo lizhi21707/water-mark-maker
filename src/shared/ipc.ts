@@ -31,6 +31,8 @@ export const DEFAULT_TEMPLATE = '{name}_wm{ext}'
 
 export const DEFAULT_WATERMARK: WatermarkConfig = {
   text: '© 2026 我的照片',
+  usePhotoDate: false,
+  dateFormat: 'YYYY-MM-DD',
   position: 'bottom-right',
   sizePct: 20,
   marginPct: 3,

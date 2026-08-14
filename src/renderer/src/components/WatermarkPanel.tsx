@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { DATE_FORMAT_PRESETS, DATE_FORMAT_SAMPLE, formatDate } from '@shared/date'
 import type { RotationStrategy, WatermarkConfig } from '@shared/types'
 import { useAppStore } from '../store/useAppStore'
 import { PositionPicker } from './PositionPicker'
@@ -76,12 +77,44 @@ export function WatermarkPanel(): React.JSX.Element {
     <aside className="flex w-80 shrink-0 flex-col overflow-y-auto border-l border-line bg-card">
       <div className="space-y-6 p-4">
         <Section title="水印内容">
+          <label className="flex cursor-pointer items-center gap-2 select-none">
+            <input
+              type="checkbox"
+              checked={watermark.usePhotoDate}
+              onChange={(e) => set({ usePhotoDate: e.target.checked })}
+              className="h-4 w-4 cursor-pointer accent-primary"
+            />
+            <span className="text-[12px] text-ink">使用照片创建日期</span>
+          </label>
+          {watermark.usePhotoDate && (
+            <div className="space-y-1">
+              <select
+                value={watermark.dateFormat}
+                onChange={(e) => set({ dateFormat: e.target.value })}
+                className="w-full rounded-lg border border-line bg-white px-3 py-2 text-[13px] text-ink outline-none transition-shadow focus:border-primary focus:ring-2 focus:ring-primary/20"
+              >
+                {DATE_FORMAT_PRESETS.map((fmt) => (
+                  <option key={fmt} value={fmt}>
+                    {formatDate(DATE_FORMAT_SAMPLE, fmt)}
+                  </option>
+                ))}
+              </select>
+              <p className="text-[11px] leading-relaxed text-ink-faint">
+                每张照片使用各自的拍摄/创建日期；无日期信息时回退下方文本。
+              </p>
+            </div>
+          )}
           <textarea
             value={watermark.text}
             onChange={(e) => set({ text: e.target.value })}
             rows={2}
-            placeholder={'输入水印文本\n支持多行'}
-            className="w-full resize-none rounded-lg border border-line bg-white px-3 py-2 text-[13px] leading-relaxed text-ink outline-none transition-shadow placeholder:text-ink-faint focus:border-primary focus:ring-2 focus:ring-primary/20"
+            disabled={watermark.usePhotoDate}
+            placeholder={
+              watermark.usePhotoDate
+                ? `如：${formatDate(DATE_FORMAT_SAMPLE, watermark.dateFormat)}`
+                : '输入水印文本\n支持多行'
+            }
+            className="w-full resize-none rounded-lg border border-line bg-white px-3 py-2 text-[13px] leading-relaxed text-ink outline-none transition-shadow placeholder:text-ink-faint focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:bg-bg"
           />
         </Section>
 

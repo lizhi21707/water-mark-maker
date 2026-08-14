@@ -72,7 +72,7 @@ export function startExport(
         const outPath = join(settings.outDir, resolved.name)
         try {
           const format: OutputFormat = mapOutputFormat(mapOutputExt(item.ext))
-          await exportImage(item.filePath, outPath, watermark, item.width, item.height, format, settings.quality)
+          await exportImage(item.filePath, outPath, watermark, item.width, item.height, format, settings.quality, item.createdAt)
           done++
           setImageStatus(item.id, 'exported')
         } catch (err) {

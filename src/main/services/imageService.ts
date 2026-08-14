@@ -2,6 +2,7 @@ import { createHash } from 'crypto'
 import { basename, extname } from 'path'
 import sharp, { type Metadata } from 'sharp'
 import type { ImageItem, ThumbResult } from '../../shared/types'
+import { createdTimeMs } from '../utils/exif'
 import { createQueue } from '../utils/queue'
 
 const THUMB_SIZE = 320
@@ -65,6 +66,7 @@ export async function addImages(paths: string[]): Promise<ImageItem[]> {
       ext: extname(p).slice(1).toLowerCase(),
       width: 0,
       height: 0,
+      createdAt: null,
       thumb: null,
       status: 'pending'
     }
@@ -73,6 +75,7 @@ export async function addImages(paths: string[]): Promise<ImageItem[]> {
       const size = orientedSize(meta)
       item.width = size.width
       item.height = size.height
+      item.createdAt = await createdTimeMs(p, meta.exif)
       images.set(item.id, item)
       added.push(item)
       thumbQueue.push(item.id)

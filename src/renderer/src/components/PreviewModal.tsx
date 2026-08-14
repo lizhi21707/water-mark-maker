@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { resolveWatermarkText } from '@shared/date'
 import { useAppStore } from '../store/useAppStore'
 import { IconChevronLeft, IconChevronRight, IconX } from './Icons'
 import { drawWatermark, ensureFont } from '../utils/previewCanvas'
@@ -57,7 +58,8 @@ export function PreviewModal(): React.JSX.Element | null {
       const ctx = canvas.getContext('2d')
       if (!ctx) return
       ctx.scale(dpr, dpr)
-      ensureFont(watermark.fontWeight).then(() => drawWatermark(ctx, watermark, w, h))
+      const eff = { ...watermark, text: resolveWatermarkText(watermark, item?.createdAt ?? null) }
+      ensureFont(watermark.fontWeight).then(() => drawWatermark(ctx, eff, w, h))
     }
 
     draw()

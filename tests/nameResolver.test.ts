@@ -17,6 +17,7 @@ function makeItem(fileName: string): ImageItem {
     ext: dot >= 0 ? fileName.slice(dot + 1).toLowerCase() : '',
     width: 100,
     height: 100,
+    createdAt: null,
     thumb: null,
     status: 'ready'
   }

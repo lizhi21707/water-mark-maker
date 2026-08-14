@@ -59,6 +59,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   images: [],
   watermark: {
     text: '© 2026 我的照片',
+    usePhotoDate: false,
+    dateFormat: 'YYYY-MM-DD',
     position: 'bottom-right',
     sizePct: 20,
     marginPct: 3,

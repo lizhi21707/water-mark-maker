@@ -17,6 +17,10 @@ export type RotationStrategy = 'auto' | 'horizontal' | 'vertical'
 export interface WatermarkConfig {
   /** 水印文本，支持 \n 多行 */
   text: string
+  /** 勾选后水印文本使用照片创建日期（EXIF DateTimeOriginal，缺失回退文件修改时间） */
+  usePhotoDate: boolean
+  /** 日期格式模板（仅 usePhotoDate 时生效），token 见 shared/date.ts */
+  dateFormat: string
   position: WatermarkPosition
   /** 文字方向跨度占短边百分比（1–60） */
   sizePct: number
@@ -54,6 +58,8 @@ export interface ImageItem {
   /** 已按 EXIF 方向校正后的尺寸 */
   width: number
   height: number
+  /** 照片创建时间（EXIF DateTimeOriginal，缺失回退文件 mtime），ms 时间戳 */
+  createdAt: number | null
   thumb: ThumbResult | null
   status: ImageStatus
   error?: string

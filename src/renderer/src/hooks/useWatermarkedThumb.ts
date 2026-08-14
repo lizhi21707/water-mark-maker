@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { resolveWatermarkText } from '@shared/date'
 import type { ImageItem, WatermarkConfig } from '@shared/types'
 import { compositeThumb, ensureFont } from '../utils/previewCanvas'
 
@@ -15,13 +16,18 @@ export function useWatermarkedThumb(
   config: WatermarkConfig
 ): string | null {
   const [url, setUrl] = useState<string | null>(null)
+  // 「使用照片创建日期」时按该照片时间解析水印文本（缓存 key 已含 id，互不串扰）
+  const effConfig: WatermarkConfig = {
+    ...config,
+    text: resolveWatermarkText(config, item.createdAt)
+  }
 
   useEffect(() => {
     let alive = true
     const thumb = item.thumb
     if (!thumb) return
 
-    const key = `${item.id}|${configHash(config)}`
+    const key = `${item.id}|${configHash(effConfig)}`
     const hit = cache.get(key)
     if (hit) {
       setUrl(hit)
@@ -33,7 +39,7 @@ export function useWatermarkedThumb(
       if (!alive) return
       ensureFont(config.fontWeight).then(() => {
         if (!alive) return
-        const dataUrl = compositeThumb(img, config)
+        const dataUrl = compositeThumb(img, effConfig)
         cache.set(key, dataUrl)
         if (cache.size > MAX_CACHE) {
           const first = cache.keys().next().value

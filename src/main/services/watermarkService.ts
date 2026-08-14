@@ -1,5 +1,6 @@
 import { Resvg } from '@resvg/resvg-js'
 import sharp from 'sharp'
+import { resolveWatermarkText } from '../../shared/date'
 import { WATERMARK_FONT_FAMILY } from '../../shared/ipc'
 import { buildSvg, computeLayout } from '../../shared/layout'
 import type { WatermarkConfig } from '../../shared/types'
@@ -46,6 +47,7 @@ export function mapOutputFormat(ext: string): OutputFormat {
 /**
  * 导出单张：EXIF 摆正 → 合成水印 → 转目标格式 → 写文件。
  * imgW/imgH 为摆正后的尺寸（imageService 已校正）。
+ * createdAt 用于「使用照片创建日期」水印（null 时回退 config.text）。
  */
 export async function exportImage(
   inputPath: string,
@@ -54,10 +56,12 @@ export async function exportImage(
   imgW: number,
   imgH: number,
   format: OutputFormat,
-  quality: number
+  quality: number,
+  createdAt: number | null
 ): Promise<void> {
-  const overlay = renderWatermarkPng(config, imgW, imgH)
-  const layout = overlay ? computeLayout(config, imgW, imgH) : null
+  const resolved = { ...config, text: resolveWatermarkText(config, createdAt) }
+  const overlay = renderWatermarkPng(resolved, imgW, imgH)
+  const layout = overlay ? computeLayout(resolved, imgW, imgH) : null
 
   let pipe = sharp(inputPath, { sequentialRead: true, failOn: 'none' }).rotate()
   if (overlay && layout) {
