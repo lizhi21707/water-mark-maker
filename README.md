@@ -26,7 +26,7 @@
 
 直接运行安装包内的「水印工具」即可。首次打开时：
 
-- **macOS**：由于未签名，Gatekeeper 会拦截 —— 右键（或 Control+点击）应用图标 →「打开」→ 再点「打开」即可；之后可正常双击启动
+- **macOS**：未公证，Gatekeeper 首次会拦截 —— 右键（或 Control+点击）应用图标 →「打开」→ 再点「打开」即可；放行一次后永久生效，之后可正常双击启动
 - **Windows**：SmartScreen 提示时选择「更多信息」→「仍要运行」
 
 ## 开发
@@ -64,4 +64,4 @@ Electron + React 18 + TypeScript + Tailwind v4 · sharp（libvips）· resvg-js�
 - 不支持 BMP（sharp 预编译 libvips 无 BMP 解码器）
 - HEIC 为尽力支持，个别编码变体可能解码失败（会标记为失败并跳过）
 - GIF 导出为静态首帧（转 PNG）
-- 无代码签名：分发时需按上文绕过系统提示；如需正式分发，配置 Apple 公证 / Windows 代码签名证书后移除 `mac.identity: null` 重新打包
+- macOS 为 ad-hoc 签名（`mac.identity: "-"`），Windows 无签名：分发时需按上文绕过系统提示；如需正式分发（双击直接安装、无任何警告），配置 Apple Developer ID + 公证 / Windows 代码签名证书后重新打包

@@ -27,7 +27,9 @@ extraResources:
     to: fonts
 
 mac:
-  identity: null # 无签名构建（首次打开需右键→打开）
+  # ad-hoc 签名：无签名 + quarantine 会被 Gatekeeper 每次启动杀掉（弹跳打不开）；
+  # 有签名（哪怕 ad-hoc）右键→打开一次后放行记录能绑定 CDHash，永久生效
+  identity: "-"
   category: public.app-category.graphics-design
   target:
     - dmg

@@ -1,6 +1,6 @@
 {
   "name": "water-mark-maker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "跨平台图片水印工具（macOS / Windows）",
   "main": "./out/main/index.js",
   "author": "tank",
